@@ -18,8 +18,8 @@ class Movies extends React.Component {
       title: movieTitle
     };
     axios.post('/fav', movie)
-      .then(({data}) => {
-        console.log(`-- Movie added to the Favorites list: "${data.title}" --`);
+      .then((data) => {
+        console.log(`-- Movie added to the Favorites list: "${data.config.data}" --`);
         this.props.incrementFav();
       })
       .catch((err) => {

@@ -16,9 +16,9 @@ class Favorites extends React.Component {
   fetchFavorites() {
     axios.get('/movies/favs')
       .then(({data}) => {
-        console.log('data from server', data);
+        console.log('data from server', data[0]);
         this.setState({
-          favMovies: data
+          favMovies: data[0]
         });
       })
       .catch((err) => {

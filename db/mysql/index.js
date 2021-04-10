@@ -4,36 +4,41 @@ const {MYSQL_KEY} = require('../../config/config.js');
 // define schema
 const Favorites = `(
   id INT NOT NULL AUTO_INCREMENT,
-  tmdbid TINYINT,
-  title VARCHAR(50),
+  tmdbid INT,
+  title VARCHAR(100),
   PRIMARY KEY(id)
 )`
 
 const dbName = 'BadMovies';
 
-module.exports.connection = mysql.createConnection({
+const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: MYSQL_KEY
 })
-  .then((conn) => {
-    console.log('///DB Connected///');
-    return conn;
+
+db
+  .then((connection) => {
+    console.log('///DB connected///');
+    return connection;
   })
   .catch((err) => {
     console.log('///Error connecting to DB///', err);
   })
-  .then((conn) => {
-    conn.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
-    return conn;
+  .then((connection) => {
+    connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
+    return connection;
   })
-  .then((conn) => {
-    conn.query(`USE ${dbName}`);
-    return conn;
+  .then((connection) => {
+    connection.query(`USE ${dbName}`);
+    return connection;
   })
-  .then((conn) => {
-    conn.query(`CREATE TABLE IF NOT EXISTS Favorites ${Favorites}`);
+  .then((connection) => {
+    connection.query(`CREATE TABLE IF NOT EXISTS Favorites ${Favorites}`);
+    return connection;
   })
   .catch((err) => {
     console.log('Error initializing DB: ', err)
   })
+
+module.exports = db;

@@ -5,7 +5,9 @@ const bodyParser = require('body-parser');
 /// helpers ///
 const fetchGenres  = require('./api-helpers/fetchGenres.js');
 const fetchMovies = require('./api-helpers/fetchMovies.js');
-const { saveOne, deleteOne, findAll } = require('../db/model.js');
+// PICK mySQL or MongoDB
+const { saveOne, deleteOne, findAll } = require('../db//mysql/model.js');
+// const { saveOne, deleteOne, findAll } = require('../db/model.js');
 
 
 /// SERVER ///
@@ -38,9 +40,24 @@ app.get('/movies', (req, res) => {
     })
 });
 
-/// DATABASE ROUTES ///
+/// MODEL ROUTES - MySQL ///
+
+app.get('/movies/favs', (req, res) => {
+  findAll()
+    .then((result) => {
+      console.log('>>>>Result from mySQL', result);
+      res.send(result)
+    })
+    .catch((err) => {
+      console.log('error retrieving favorites from server\n', err)
+      res.sendStatus(500)
+    })
+});
+
 app.post('/fav', (req, res) => {
-  saveOne(req.body)
+  const params = [req.body.tmdbid, req.body.title];
+  console.log('<<<PARAMS>>>>', params);
+  saveOne(params)
     .then((result) => {
       res.status(201).send(result)
     })
@@ -50,19 +67,9 @@ app.post('/fav', (req, res) => {
     })
 })
 
-app.get('/movies/favs', (req, res) => {
-  findAll()
-    .then((result) => {
-      res.send(result)
-    })
-    .catch((err) => {
-      console.log('error retrieving favorites from server\n', err)
-      res.sendStatus(500)
-    })
-});
-
 app.delete('/fav/del', (req, res) => {
-  deleteOne(req.body.tmdbid)
+  const params = [req.body.tmdbid];
+  deleteOne(params)
     .then((result) => {
       res.send(result)
     })
@@ -76,4 +83,44 @@ app.delete('/fav/del', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`)
 });
+
+
+// /// MODEL ROUTES - MongoDB ///
+// app.post('/fav', (req, res) => {
+//   saveOne(req.body)
+//     .then((result) => {
+//       res.status(201).send(result)
+//     })
+//     .catch((err) => {
+//       console.log('error saving movie to server\n', err)
+//       res.sendStatus(500)
+//     })
+// })
+
+// app.get('/movies/favs', (req, res) => {
+//   findAll()
+//     .then((result) => {
+//       res.send(result)
+//     })
+//     .catch((err) => {
+//       console.log('error retrieving favorites from server\n', err)
+//       res.sendStatus(500)
+//     })
+// });
+
+// app.delete('/fav/del', (req, res) => {
+//   deleteOne(req.body.tmdbid)
+//     .then((result) => {
+//       res.send(result)
+//     })
+//     .catch((err) => {
+//       console.log('error deleting a favorite entry from server\n', err)
+//       res.sendStatus(500)
+//     })
+// });
+
+
+// app.listen(PORT, () => {
+//   console.log(`Server is listening on port ${PORT}`)
+// });
 

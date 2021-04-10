@@ -12,7 +12,7 @@ class App extends React.Component {
 
     this.state = {
       movies: [],
-      inFavorit`e: false,
+      inFavorite: false,
       favoritesCount: 0
     }
     this.handleGenreClick = this.handleGenreClick.bind(this);

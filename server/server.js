@@ -3,9 +3,9 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 /// helpers ///
-const fetchGenres  = require('./helpers/fetchGenres.js');
-const fetchMovies = require('./helpers/fetchMovies.js');
-const { saveOne, deleteOne, findAll } = require('../db');
+const fetchGenres  = require('./api-helpers/fetchGenres.js');
+const fetchMovies = require('./api-helpers/fetchMovies.js');
+const { saveOne, deleteOne, findAll } = require('../db/model.js');
 
 
 /// SERVER ///

@@ -14,7 +14,7 @@ const favoritesSchema = mongoose.Schema({
 let Favorites = mongoose.model('Favorites', favoritesSchema);
 
 
-module.exports.save = (movie) => {
+module.exports.saveOne = (movie) => {
   console.log('>>>>> DB attempting to SAVE this movie to the Favorites collection: ', movie);
   return Favorites.findOneAndUpdate(
     {tmdbid: movie.id},
@@ -26,9 +26,14 @@ module.exports.save = (movie) => {
   )
 }
 
-module.exports.delete = (movie) => {
-  console.log('>>>>> DB attempting to DELETE this movie to the Favorites collection: ', movie);
-  return Favorites.deleteOne({tmdbid: movie.tmdbid});
+module.exports.deleteOne = (movieId) => {
+  console.log('>>>>> DB attempting to DELETE this movieId from Favorites collection: ', movieId);
+  return Favorites.deleteOne({tmdbid: movieId});
+}
+
+module.exports.findAll = () => {
+  console.log('>>>>> RETRIEVING ALL documents from DB');
+  return Favorites.find({});
 }
 
 /*

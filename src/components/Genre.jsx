@@ -19,7 +19,6 @@ class Genre extends React.Component {
     axios.get('/genres')
       .then(({data}) => {
         const fetchedGenres = data.genres;
-        console.log(fetchedGenres)
         this.setState({
           genres: fetchedGenres
         });

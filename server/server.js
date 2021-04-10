@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 /// helpers ///
 const fetchGenres  = require('./helpers/fetchGenres.js');
 const fetchMovies = require('./helpers/fetchMovies.js');
-const { save } = require('../db');
+const { saveOne, deleteOne, findAll } = require('../db');
 
 
 /// SERVER ///
@@ -34,26 +34,46 @@ app.get('/movies', (req, res) => {
     })
     .catch((err) => {
       console.log('error fetching movies by genre from API\n', err)
+      res.sendStatus(500)
     })
 });
 
 /// DATABASE ROUTES ///
 app.post('/fav', (req, res) => {
-  save(req.body)
+  saveOne(req.body)
     .then((result) => {
-      console.log('////result from server////', result);
-      res.send(result)
+      res.status(201).send(result)
     })
     .catch((err) => {
       console.log('error saving movie to server\n', err)
+      res.sendStatus(500)
     })
 })
 
+app.get('/movies/favs', (req, res) => {
+  findAll()
+    .then((result) => {
+      res.send(result)
+    })
+    .catch((err) => {
+      console.log('error retrieving favorites from server\n', err)
+      res.sendStatus(500)
+    })
+});
+
+app.delete('/fav/del', (req, res) => {
+  deleteOne(req.body.tmdbid)
+    .then((result) => {
+      res.send(result)
+    })
+    .catch((err) => {
+      console.log('error deleting a favorite entry from server\n', err)
+      res.sendStatus(500)
+    })
+});
 
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`)
 });
 
-
-// `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEy}&language=en-US&sort_by=popularity.asc&include_adult=false&include_video=false&page=1&with_genres=${genreId}&with_original_language=en`

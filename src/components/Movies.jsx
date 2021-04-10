@@ -18,7 +18,10 @@ class Movies extends React.Component {
       title: movieTitle
     };
     axios.post('/fav', movie)
-
+      .then(({data}) => {
+        console.log(`-- Movie added to the Favorites list: "${data.title}" --`);
+        this.props.incrementFav();
+      })
       .catch((err) => {
         console.log('Err from server after attempting to post to DB:', err);
       })

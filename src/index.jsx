@@ -14,8 +14,6 @@ class App extends React.Component {
     this.handleGenreClick = this.handleGenreClick.bind(this);
   }
 
-
-
   handleGenreClick(genreId) {
 
     axios.get('/movies', {

@@ -11,6 +11,19 @@ class Movies extends React.Component {
 
   }
 
+  handleFavoriting(movieId, movieTitle) {
+    console.log(`-- Adding "${movieTitle}" to user's favorites list --`);
+    const movie = {
+      tmdbid: movieId,
+      title: movieTitle
+    };
+    axios.post('/fav', movie)
+
+      .catch((err) => {
+        console.log('Err from server after attempting to post to DB:', err);
+      })
+  }
+
   render() {
     const movies = this.props.movies;
     if (movies.length > 0) {
@@ -20,9 +33,9 @@ class Movies extends React.Component {
           <ol>
             {movies.map((movie) => {
               return (
-                <li key={movie.id}>
+                <li onClick={() => {this.handleFavoriting(movie.id, movie.original_title)}} key={movie.id}>
                   <h5>{movie.original_title}</h5>
-                  <p><em>{movie.release_date}</em></p>
+                  <p><em>Released: {movie.release_date}</em></p>
                   <p>{movie.overview}</p>
                 </li>
               )
